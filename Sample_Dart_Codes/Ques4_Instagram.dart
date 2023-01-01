@@ -1,12 +1,15 @@
 import 'dart:io';
 
-Instagram profiles = [] as Instagram;
+List<Instagram> profiles = <Instagram>[];
+var users = [];
 
 class Instagram {
-  var users = [];
+  var userId;
+
   var posts = [];
   var followers = [];
   Instagram(int userId) {
+    this.userId = userId;
     users.add(userId);
   }
   void post(int postId) {
@@ -14,6 +17,7 @@ class Instagram {
   }
 
   void follow(int user) {
+    //print(users);
     if (users.contains(user)) {
       followers.add(user);
     } else {
@@ -31,6 +35,7 @@ class Instagram {
 
   void feed() {
     //Gives the 10 most recent post of the current user
+
     var limit;
     if (posts.length <= 10) {
       limit = posts.length;
@@ -38,20 +43,27 @@ class Instagram {
       limit = 10;
     }
     for (int i = 0; i < limit; i++) {
-      print(posts[i]);
+      print("$userId ${posts[i]}");
     }
   }
 
   void getfeed() {
     //prints the 10 most recent posts of the followers of current user
+    for (int i = 0; i < followers.length; i++) {
+      profiles[followers[i]].feed();
+    }
   }
 }
 
 void main() {
-  profiles.add(new Instagram(1));
-  /*user1.post(1);
-  user1.post(2);
-  user1.post(3);
-  user1.follow(2);
-  user1.feed();*/
+  for (int i = 0; i < 5; i++) {
+    profiles.add(new Instagram(i)); //Creates 5 user accounts
+    profiles[i].post(1); //Creates 1 Post for all 5 accounts
+  }
+  profiles[0].follow(1);
+  profiles[0].follow(2);
+  profiles[0].follow(3);
+  profiles[0].follow(4);
+  profiles[0].follow(5);
+  profiles[0].getfeed();
 }
